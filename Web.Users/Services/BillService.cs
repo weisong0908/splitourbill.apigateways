@@ -5,9 +5,49 @@ using Web.Users.Models;
 
 namespace Web.Users.Services
 {
-    public class BillService
+    public interface IBillService
     {
+        Bill GetBill(Guid id);
+        IList<Bill> GetBills(int count);
+        Bill UpdateBill(Bill bill);
+        IList<Bill> AddBill(Bill bill);
+    }
+
+    public class BillService : IBillService
+    {
+        private IList<Bill> _bills;
+
+        public BillService()
+        {
+            _bills = CreateFakeBills();
+        }
+
         public IList<Bill> GetBills(int count)
+        {
+            return _bills.OrderBy(b => b.DateTime).Take(count).ToList();
+        }
+
+        public Bill GetBill(Guid id)
+        {
+            return _bills.Where(b => b.Id == id).SingleOrDefault();
+        }
+
+        public Bill UpdateBill(Bill bill)
+        {
+            var billToBeUpdated = _bills.SingleOrDefault(b => b.Id == bill.Id);
+            _bills.Remove(billToBeUpdated);
+            _bills.Add(bill);
+
+            return _bills.SingleOrDefault(b => b.Id == bill.Id);
+        }
+
+        public IList<Bill> AddBill(Bill bill)
+        {
+            _bills.Add(bill);
+            return _bills;
+        }
+
+        private static List<Bill> CreateFakeBills()
         {
             var bill = new Bill();
             bill.Id = new Guid();
@@ -35,10 +75,9 @@ namespace Web.Users.Services
                 }
             };
 
-            var bills = new List<Bill>();
-            bills.Add(bill);
-
-            return bills.OrderBy(b => b.DateTime).Take(count).ToList();
+            var _bills = new List<Bill>();
+            _bills.Add(bill);
+            return _bills;
         }
     }
 }

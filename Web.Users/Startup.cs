@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Web.Users.Services;
 
 namespace Web.Users
 {
@@ -27,11 +28,13 @@ namespace Web.Users
         {
             services.AddControllers();
 
+            services.AddSingleton<IBillService, BillService>();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("allow all", builder =>
                 {
-                    builder.AllowAnyOrigin();
+                    builder.AllowAnyOrigin().AllowAnyHeader();
                 });
             });
         }
