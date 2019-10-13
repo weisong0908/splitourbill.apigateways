@@ -26,6 +26,14 @@ namespace Web.Users
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("allow all", builder =>
+                {
+                    builder.AllowAnyOrigin();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,7 +44,9 @@ namespace Web.Users
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors("allow all");
+
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
