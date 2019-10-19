@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Web.Users.Models;
+using Web.Users.Models.RequestModels;
 using Web.Users.Services;
 
 namespace Web.Users.Controllers
@@ -36,20 +37,20 @@ namespace Web.Users.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateBill(Guid id, [FromBody]Bill bill)
+        public IActionResult UpdateBill(Guid id, [FromBody]BillUpdateRequest billUpdateRequest)
         {
-            if (id != bill.Id)
+            if (id != billUpdateRequest.Id)
                 return BadRequest();
 
-            var updatedBill = billService.UpdateBill(bill);
+            var updatedBill = billService.UpdateBill(billUpdateRequest);
 
             return Ok(updatedBill);
         }
 
         [HttpPost]
-        public IActionResult AddBill([FromBody] Bill bill)
+        public IActionResult AddBill([FromBody] BillAddRequest billAddRequest)
         {
-            var bills = billService.AddBill(bill);
+            var bills = billService.AddBill(billAddRequest);
 
             return Ok(bills);
         }

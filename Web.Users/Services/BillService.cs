@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Web.Users.Models;
+using Web.Users.Models.RequestModels;
 
 namespace Web.Users.Services
 {
@@ -9,8 +10,8 @@ namespace Web.Users.Services
     {
         Bill GetBill(Guid id);
         IList<Bill> GetBills(int count);
-        Bill UpdateBill(Bill bill);
-        IList<Bill> AddBill(Bill bill);
+        Bill UpdateBill(BillUpdateRequest billUpdateRequest);
+        IList<Bill> AddBill(BillAddRequest billAddRequest);
     }
 
     public class BillService : IBillService
@@ -32,26 +33,54 @@ namespace Web.Users.Services
             return _bills.Where(b => b.Id == id).SingleOrDefault();
         }
 
-        public Bill UpdateBill(Bill bill)
+        public Bill UpdateBill(BillUpdateRequest billUpdateRequest)
         {
-            var billToBeUpdated = _bills.SingleOrDefault(b => b.Id == bill.Id);
+            var billToBeUpdated = _bills.SingleOrDefault(b => b.Id == billUpdateRequest.Id);
             _bills.Remove(billToBeUpdated);
-            _bills.Add(bill);
+            _bills.Add(MapBillUpdateRequestToBill(billUpdateRequest));
 
-            return _bills.SingleOrDefault(b => b.Id == bill.Id);
+            return _bills.SingleOrDefault(b => b.Id == billUpdateRequest.Id);
         }
 
-        public IList<Bill> AddBill(Bill bill)
+        public IList<Bill> AddBill(BillAddRequest billAddRequest)
         {
-            _bills.Add(bill);
+            _bills.Add(MapBillAddRequestToBill(billAddRequest));
             return _bills;
+        }
+
+        private Bill MapBillAddRequestToBill(BillAddRequest billAddRequest)
+        {
+            var bill = new Bill();
+            bill.Id = Guid.NewGuid();
+            bill.DateTime = billAddRequest.DateTime;
+            bill.Purpose = billAddRequest.Purpose;
+            bill.Remarks = billAddRequest.Remarks;
+            bill.Requestor = billAddRequest.Requestor;
+            bill.Requests = billAddRequest.Requests;
+            bill.TotalAmount = decimal.Parse(billAddRequest.TotalAmount);
+
+            return bill;
+        }
+
+        private Bill MapBillUpdateRequestToBill(BillUpdateRequest billUpdateRequest)
+        {
+            var bill = new Bill();
+            bill.Id = Guid.NewGuid();
+            bill.DateTime = billUpdateRequest.DateTime;
+            bill.Purpose = billUpdateRequest.Purpose;
+            bill.Remarks = billUpdateRequest.Remarks;
+            bill.Requestor = billUpdateRequest.Requestor;
+            bill.Requests = billUpdateRequest.Requests;
+            bill.TotalAmount = decimal.Parse(billUpdateRequest.TotalAmount);
+
+            return bill;
         }
 
         private static List<Bill> CreateFakeBills()
         {
             var bill = new Bill();
-            bill.Id = new Guid();
-            bill.Requestor = new User() { Id = new Guid(), Username = "User 1" };
+            bill.Id = Guid.NewGuid();
+            bill.Requestor = new User() { Id = Guid.NewGuid(), Username = "User 1" };
             bill.DateTime = DateTime.UtcNow;
             bill.Purpose = "Dinner";
             bill.Remarks = "nothing";
@@ -60,17 +89,17 @@ namespace Web.Users.Services
             {
                 new BillRequest()
                 {
-                    User = new User(){Id = new Guid(), Username = "User 2"},
+                    User = new User(){Id = Guid.NewGuid(), Username = "User 2"},
                     Amount = 10
                 },
                 new BillRequest()
                 {
-                    User = new User(){Id = new Guid(), Username = "User 3"},
+                    User = new User(){Id = Guid.NewGuid(), Username = "User 3"},
                     Amount = 20
                 },
                 new BillRequest()
                 {
-                    User = new User(){Id = new Guid(), Username = "User 4"},
+                    User = new User(){Id = Guid.NewGuid(), Username = "User 4"},
                     Amount = 30
                 }
             };

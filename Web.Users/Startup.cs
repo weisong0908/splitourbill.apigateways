@@ -34,7 +34,7 @@ namespace Web.Users
             {
                 options.AddPolicy("allow all", builder =>
                 {
-                    builder.AllowAnyOrigin().AllowAnyHeader();
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
             });
         }
@@ -53,7 +53,7 @@ namespace Web.Users
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            // app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
