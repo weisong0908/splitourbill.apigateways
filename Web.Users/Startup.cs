@@ -33,6 +33,7 @@ namespace Web.Users
             services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>(), typeof(Startup));
             services.AddSingleton<IBillService, BillService>();
             services.AddSingleton<IConfigurationService, ConfigurationService>();
+            services.AddSingleton<IUserService, UserService>();
 
             services.AddCors(options =>
             {

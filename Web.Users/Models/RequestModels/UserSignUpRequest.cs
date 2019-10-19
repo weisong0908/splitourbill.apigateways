@@ -1,10 +1,7 @@
-using System;
-
-namespace Web.Users.Models
+namespace Web.Users.Models.RequestModels
 {
-    public class User
+    public class UserSignUpRequest
     {
-        public Guid Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string EmailAddress { get; set; }
