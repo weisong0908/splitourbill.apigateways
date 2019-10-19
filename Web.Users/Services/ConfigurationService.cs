@@ -57,12 +57,12 @@ namespace Web.Users.Services
                 }
             };
 
-            var purposes = new List<Purpose>();
-            purposes.Add(meal);
-            purposes.Add(activity);
-            purposes.Add(events);
+            _purposes = new List<Purpose>();
+            _purposes.Add(meal);
+            _purposes.Add(activity);
+            _purposes.Add(events);
 
-            return purposes;
+            return _purposes;
         }
     }
 }
