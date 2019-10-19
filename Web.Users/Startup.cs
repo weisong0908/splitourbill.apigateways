@@ -29,6 +29,7 @@ namespace Web.Users
             services.AddControllers();
 
             services.AddSingleton<IBillService, BillService>();
+            services.AddSingleton<IConfigurationService, ConfigurationService>();
 
             services.AddCors(options =>
             {
