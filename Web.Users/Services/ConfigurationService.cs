@@ -4,11 +4,6 @@ using Web.Users.Models;
 
 namespace Web.Users.Services
 {
-    public interface IConfigurationService
-    {
-        IList<Purpose> GetPurposes();
-    }
-
     public class ConfigurationService : IConfigurationService
     {
         private IList<Purpose> _purposes;
