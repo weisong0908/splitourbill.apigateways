@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Web.Users.Mappings;
 using Web.Users.Services;
 
 namespace Web.Users
@@ -28,6 +30,7 @@ namespace Web.Users
         {
             services.AddControllers();
 
+            services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>(), typeof(Startup));
             services.AddSingleton<IBillService, BillService>();
             services.AddSingleton<IConfigurationService, ConfigurationService>();
 

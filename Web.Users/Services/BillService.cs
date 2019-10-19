@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Web.Users.Models;
 using Web.Users.Models.RequestModels;
 
@@ -17,10 +18,12 @@ namespace Web.Users.Services
     public class BillService : IBillService
     {
         private IList<Bill> _bills;
+        private readonly IMapper mapper;
 
-        public BillService()
+        public BillService(IMapper mapper)
         {
             _bills = CreateFakeBills();
+            this.mapper = mapper;
         }
 
         public IList<Bill> GetBills(int count)
@@ -37,43 +40,17 @@ namespace Web.Users.Services
         {
             var billToBeUpdated = _bills.SingleOrDefault(b => b.Id == billUpdateRequest.Id);
             _bills.Remove(billToBeUpdated);
-            _bills.Add(MapBillUpdateRequestToBill(billUpdateRequest));
+            _bills.Add(mapper.Map<Bill>(billUpdateRequest));
 
             return _bills.SingleOrDefault(b => b.Id == billUpdateRequest.Id);
         }
 
         public IList<Bill> AddBill(BillAddRequest billAddRequest)
         {
-            _bills.Add(MapBillAddRequestToBill(billAddRequest));
+            var bill = mapper.Map<Bill>(billAddRequest);
+
+            _bills.Add(bill);
             return _bills;
-        }
-
-        private Bill MapBillAddRequestToBill(BillAddRequest billAddRequest)
-        {
-            var bill = new Bill();
-            bill.Id = Guid.NewGuid();
-            bill.DateTime = billAddRequest.DateTime;
-            bill.Purpose = billAddRequest.Purpose;
-            bill.Remarks = billAddRequest.Remarks;
-            bill.Requestor = billAddRequest.Requestor;
-            bill.Requests = billAddRequest.Requests;
-            bill.TotalAmount = decimal.Parse(billAddRequest.TotalAmount);
-
-            return bill;
-        }
-
-        private Bill MapBillUpdateRequestToBill(BillUpdateRequest billUpdateRequest)
-        {
-            var bill = new Bill();
-            bill.Id = Guid.NewGuid();
-            bill.DateTime = billUpdateRequest.DateTime;
-            bill.Purpose = billUpdateRequest.Purpose;
-            bill.Remarks = billUpdateRequest.Remarks;
-            bill.Requestor = billUpdateRequest.Requestor;
-            bill.Requests = billUpdateRequest.Requests;
-            bill.TotalAmount = decimal.Parse(billUpdateRequest.TotalAmount);
-
-            return bill;
         }
 
         private static List<Bill> CreateFakeBills()
