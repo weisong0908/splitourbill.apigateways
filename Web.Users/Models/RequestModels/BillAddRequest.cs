@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Web.Users.JsonConverter;
 
 namespace Web.Users.Models.RequestModels
 {
@@ -7,9 +9,10 @@ namespace Web.Users.Models.RequestModels
     {
         public User Requestor { get; set; }
         public DateTime DateTime { get; set; }
-        public String Purpose { get; set; }
-        public String Remarks { get; set; }
-        public string TotalAmount { get; set; }
+        public string Purpose { get; set; }
+        public string Remarks { get; set; }
+        [JsonConverter(typeof(DecimalToStringConverter))]
+        public decimal TotalAmount { get; set; }
         public IList<BillRequest> Requests { get; set; }
 
         public BillAddRequest()

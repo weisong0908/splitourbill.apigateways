@@ -11,11 +11,9 @@ namespace Web.Users.Mappings
         public MappingProfile()
         {
             CreateMap<BillAddRequest, Bill>()
-                .ForMember(b => b.Id, opt => opt.MapFrom(bar => Guid.NewGuid()))
-                .ForMember(b => b.TotalAmount, opt => opt.MapFrom(bar => Decimal.Parse(bar.TotalAmount)));
+                .ForMember(b => b.Id, opt => opt.MapFrom(bar => Guid.NewGuid()));
 
-            CreateMap<BillUpdateRequest, Bill>()
-                .ForMember(bur => bur.TotalAmount, opt => opt.MapFrom(bur => Decimal.Parse(bur.TotalAmount)));
+            CreateMap<BillUpdateRequest, Bill>();
 
             CreateMap<User, UserSimpleResponse>();
 
