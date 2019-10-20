@@ -10,6 +10,6 @@ namespace Web.Users.Services
         Bill GetBill(Guid id);
         IList<Bill> GetBills(int count);
         Bill UpdateBill(BillUpdateRequest billUpdateRequest);
-        IList<Bill> AddBill(BillAddRequest billAddRequest);
+        Bill AddBill(BillAddRequest billAddRequest);
     }
 }

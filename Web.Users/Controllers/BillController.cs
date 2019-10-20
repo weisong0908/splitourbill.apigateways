@@ -44,15 +44,15 @@ namespace Web.Users.Controllers
 
             var updatedBill = billService.UpdateBill(billUpdateRequest);
 
-            return Ok(updatedBill);
+            return Ok(updatedBill.Id);
         }
 
         [HttpPost]
         public IActionResult AddBill([FromBody] BillAddRequest billAddRequest)
         {
-            var bills = billService.AddBill(billAddRequest);
+            var bill = billService.AddBill(billAddRequest);
 
-            return Ok(bills);
+            return CreatedAtAction(nameof(GetBill), new { bill.Id }, bill);
         }
     }
 }

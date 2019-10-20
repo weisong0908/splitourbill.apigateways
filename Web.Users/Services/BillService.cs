@@ -37,12 +37,13 @@ namespace Web.Users.Services
             return _bills.SingleOrDefault(b => b.Id == billUpdateRequest.Id);
         }
 
-        public IList<Bill> AddBill(BillAddRequest billAddRequest)
+        public Bill AddBill(BillAddRequest billAddRequest)
         {
             var bill = mapper.Map<Bill>(billAddRequest);
 
             _bills.Add(bill);
-            return _bills;
+
+            return bill;
         }
 
         private static List<Bill> CreateFakeBills()
