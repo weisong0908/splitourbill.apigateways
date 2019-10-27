@@ -12,11 +12,30 @@ namespace Web.Users.Services
     {
         private readonly IMapper mapper;
         private IList<User> _users;
+        private IList<FriendRequest> _friendRequests;
 
         public UserService(IMapper mapper)
         {
             _users = CreateFakeUsers();
+            _friendRequests = CreateFakeFriendRequests();
             this.mapper = mapper;
+        }
+
+        public IList<UserSimpleResponse> GetUsers()
+        {
+            var users = new List<UserSimpleResponse>();
+            foreach (var user in _users)
+                users.Add(mapper.Map<UserSimpleResponse>(user));
+            return users;
+        }
+
+        public void AddFriendRequest(Guid requestorId, Guid requesteeId)
+        {
+            var friendRequest = new FriendRequest();
+            friendRequest.RequestorId = requestorId;
+            friendRequest.RequesteeId = requesteeId;
+
+            _friendRequests.Add(friendRequest);
         }
 
         public IList<UserSimpleResponse> GetFriends()
@@ -87,6 +106,13 @@ namespace Web.Users.Services
             };
 
             return users;
+        }
+
+        private IList<FriendRequest> CreateFakeFriendRequests()
+        {
+            var friendRequests = new List<FriendRequest>();
+
+            return friendRequests;
         }
     }
 }

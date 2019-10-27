@@ -1,5 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
+using Web.Users.Models;
 using Web.Users.Models.RequestModels;
 using Web.Users.Services;
 
@@ -15,6 +16,23 @@ namespace Web.Users.Controllers
         {
             this.userService = userService;
         }
+
+        [HttpGet("/users")]
+        public IActionResult GetUsers()
+        {
+            var users = userService.GetUsers();
+
+            return Ok(users);
+        }
+
+        [HttpPost("/friend")]
+        public IActionResult SendFriendRequest([FromBody]FriendRequest friendRequest)
+        {
+            userService.AddFriendRequest(friendRequest.RequestorId, friendRequest.RequesteeId);
+
+            return Ok();
+        }
+
 
         [HttpGet("/friends")]
         public IActionResult GetFriends()
