@@ -39,6 +39,21 @@ namespace Web.Users.Services
             _friendRequests.Add(friendRequest);
         }
 
+        public IList<FriendRequestSimpleResponse> GetFriendRequests(Guid requesteeId)
+        {
+            var friendRequestSimpleResponses = new List<FriendRequestSimpleResponse>();
+            var friendRequests = _friendRequests.Where(fr => fr.RequesteeId == requesteeId);
+            foreach (var friendRequest in friendRequests)
+            {
+                var friendRequestSimpleResponse = new FriendRequestSimpleResponse();
+                friendRequestSimpleResponse.Id = friendRequest.Id;
+                friendRequestSimpleResponse.RequestorUsername = _users.SingleOrDefault(u => u.Id == friendRequest.RequestorId).Username;
+                friendRequestSimpleResponses.Add(friendRequestSimpleResponse);
+            }
+
+            return friendRequestSimpleResponses;
+        }
+
         public IList<UserSimpleResponse> GetFriends()
         {
             var friends = new List<UserSimpleResponse>();

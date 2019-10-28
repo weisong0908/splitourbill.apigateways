@@ -9,6 +9,7 @@ namespace Web.Users.Services
     {
         IList<UserSimpleResponse> GetUsers();
         void AddFriendRequest(Guid requestorId, Guid requesteeId);
+        IList<FriendRequestSimpleResponse> GetFriendRequests(Guid requesteeId);
         IList<UserSimpleResponse> GetFriends();
         UserSimpleResponse GetFriend(Guid id);
         UserSimpleResponse AuthenticateUser(UserLoginRequest userLoginRequest);

@@ -33,6 +33,13 @@ namespace Web.Users.Controllers
             return Ok();
         }
 
+        [HttpGet("/friendRequests/{requesteeId}")]
+        public IActionResult GetFriendRequests(Guid requesteeId)
+        {
+            var friendRequests = userService.GetFriendRequests(requesteeId);
+
+            return Ok(friendRequests);
+        }
 
         [HttpGet("/friends")]
         public IActionResult GetFriends()
