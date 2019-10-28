@@ -32,6 +32,7 @@ namespace Web.Users.Services
         public void AddFriendRequest(Guid requestorId, Guid requesteeId)
         {
             var friendRequest = new FriendRequest();
+            friendRequest.Id = Guid.NewGuid();
             friendRequest.RequestorId = requestorId;
             friendRequest.RequesteeId = requesteeId;
 
