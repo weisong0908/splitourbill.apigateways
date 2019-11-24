@@ -30,6 +30,14 @@ namespace Web.Users
         {
             services.AddControllers();
 
+            services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "http://localhost:5100";
+                options.Audience = "apigateway.web";
+                options.RequireHttpsMetadata = false;
+            });
+
             services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>(), typeof(Startup));
             services.AddSingleton<IBillService, BillService>();
             services.AddSingleton<IConfigurationService, ConfigurationService>();
@@ -58,7 +66,8 @@ namespace Web.Users
 
             app.UseRouting();
 
-            // app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
