@@ -33,8 +33,8 @@ namespace Web.Users
             services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
             {
-                options.Authority = "http://localhost:5100";
-                options.Audience = "apigateway.web";
+                options.Authority = Configuration.GetValue<string>("Authentication:Authority");
+                options.Audience = Configuration.GetValue<string>("Authentication:Audience");
                 options.RequireHttpsMetadata = false;
             });
 
@@ -45,9 +45,12 @@ namespace Web.Users
 
             services.AddCors(options =>
             {
-                options.AddPolicy("allow all", builder =>
+                options.AddPolicy("allow vue client", builder =>
                 {
-                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    builder
+                        .WithOrigins(Configuration.GetSection("Security:AllowedOrigins").Get<string[]>())
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
                 });
             });
         }
@@ -60,7 +63,7 @@ namespace Web.Users
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("allow all");
+            app.UseCors("allow vue client");
 
             // app.UseHttpsRedirection();
 
