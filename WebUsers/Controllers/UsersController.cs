@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using WebUsers.Models;
 using WebUsers.Models.ResponseModels;
 
 namespace WebUsers.Controllers
@@ -11,9 +13,12 @@ namespace WebUsers.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IHttpClientFactory _clientFactory;
-        public UsersController(IHttpClientFactory clientFactory)
+
+        public UsersController(IMapper mapper, IHttpClientFactory clientFactory)
         {
+            _mapper = mapper;
             _clientFactory = clientFactory;
         }
 
@@ -27,7 +32,7 @@ namespace WebUsers.Controllers
 
             var users = JsonSerializer.Deserialize<IList<User>>(await response.Content.ReadAsStringAsync());
 
-            return Ok(users);
+            return Ok(_mapper.Map<IList<UserSimpleResponse>>(users));
         }
     }
 }

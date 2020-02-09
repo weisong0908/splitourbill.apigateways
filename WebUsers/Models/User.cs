@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace WebUsers.Models.ResponseModels
+namespace WebUsers.Models
 {
     public class User
     {
