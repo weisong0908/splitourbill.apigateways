@@ -37,6 +37,17 @@ namespace WebUsers
 
             services.AddAutoMapper(configAction => configAction.AddProfile<MappingProfile>(), typeof(Startup));
             services.AddScoped<IUserService, UserService>();
+
+            services.AddCors(setupAction =>
+            {
+                setupAction.AddPolicy("allow clients", configurePolicy =>
+                {
+                    configurePolicy
+                        .WithOrigins(Configuration.GetSection("Security:AllowedOrigins").Get<string[]>())
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +58,9 @@ namespace WebUsers
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors("allow clients");
+
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
