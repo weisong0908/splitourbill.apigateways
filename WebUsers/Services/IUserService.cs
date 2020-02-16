@@ -9,6 +9,7 @@ namespace WebUsers.Services
     public interface IUserService
     {
         Task<IList<UserSimpleResponse>> GetUsers();
+        Task<UserSimpleResponse> GetUser(Guid userId);
         Task<IList<UserSimpleResponse>> GetFriends(Guid userId);
     }
 }

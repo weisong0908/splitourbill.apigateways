@@ -30,5 +30,11 @@ namespace WebUsers.Controllers
         {
             return Ok(await _userService.GetFriends(userId));
         }
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUser(Guid userId)
+        {
+            return Ok(await _userService.GetUser(userId));
+        }
     }
 }

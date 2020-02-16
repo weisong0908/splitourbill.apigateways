@@ -69,5 +69,17 @@ namespace WebUsers.Services
 
             return friends;
         }
+
+        public async Task<UserSimpleResponse> GetUser(Guid userId)
+        {
+            var client = _clientFactory.CreateClient("UserService");
+            var response = await client.GetAsync("users/" + userId);
+
+            response.EnsureSuccessStatusCode();
+
+            var user = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
+
+            return _mapper.Map<UserSimpleResponse>(user);
+        }
     }
 }
