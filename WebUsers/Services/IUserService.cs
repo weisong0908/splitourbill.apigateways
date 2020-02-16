@@ -11,5 +11,6 @@ namespace WebUsers.Services
         Task<IList<UserSimpleResponse>> GetUsers();
         Task<UserSimpleResponse> GetUser(Guid userId);
         Task<IList<UserSimpleResponse>> GetFriends(Guid userId);
+        Task<IList<UserSimpleResponse>> GetFriendRequests(Guid userId);
     }
 }
