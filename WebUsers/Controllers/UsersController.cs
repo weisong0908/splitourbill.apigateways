@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
@@ -22,6 +23,12 @@ namespace WebUsers.Controllers
         public async Task<IActionResult> GetUsersAsync()
         {
             return Ok(await _userService.GetUsers());
+        }
+
+        [HttpGet("{userId}/friends")]
+        public async Task<IActionResult> GetFriends(Guid userId)
+        {
+            return Ok(await _userService.GetFriends(userId));
         }
     }
 }

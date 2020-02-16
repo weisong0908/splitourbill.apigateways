@@ -1,5 +1,5 @@
 using AutoMapper;
-using WebUsers.Models;
+using WebUsers.Models.DomainModels;
 using WebUsers.Models.ResponseModels;
 
 namespace WebUsers.Mappings
