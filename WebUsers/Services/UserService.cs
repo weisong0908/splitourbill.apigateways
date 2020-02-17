@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using WebUsers.Models.DomainModels;
+using WebUsers.Models.RequestModels;
 using WebUsers.Models.ResponseModels;
 
 namespace WebUsers.Services
@@ -113,6 +115,17 @@ namespace WebUsers.Services
             }
 
             return requestors;
+        }
+
+        public async Task<User> CreateUser(NewUserCreationRequest newUserCreationRequest)
+        {
+            var client = _clientFactory.CreateClient("UserService");
+            var content = new StringContent(JsonSerializer.Serialize<NewUserCreationRequest>(newUserCreationRequest), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("users", content);
+
+            response.EnsureSuccessStatusCode();
+
+            return JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync());
         }
     }
 }
