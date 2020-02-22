@@ -44,6 +44,22 @@ namespace WebUsers.Controllers
             return Ok(await _userService.GetFriendRequests(userId));
         }
 
+        [HttpGet("relationships/{relationshipId}")]
+        public async Task<IActionResult> GetRelationship(Guid relationshipId)
+        {
+            var relationship = await _userService.GetRelationship(relationshipId);
+
+            return Ok(relationship);
+        }
+
+        [HttpPost("{userId}/friendRequests")]
+        public async Task<IActionResult> SendFriendRequests([FromBody] NewRelationshipCreationRequest newRelationshipCreationRequest)
+        {
+            var relationship = await _userService.SendFriendRequest(newRelationshipCreationRequest.RequestorId, newRelationshipCreationRequest.RequesteeId);
+
+            return CreatedAtAction(nameof(GetRelationship), new { relationshipId = relationship.Id }, relationship);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] NewUserCreationRequest newUserCreationRequest)
         {

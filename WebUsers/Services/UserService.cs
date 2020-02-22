@@ -117,6 +117,36 @@ namespace WebUsers.Services
             return requestors;
         }
 
+        public async Task<Relationship> GetRelationship(Guid relationshipId)
+        {
+            var client = _clientFactory.CreateClient("UserService");
+            var response = await client.GetAsync("relationships/" + relationshipId);
+            response.EnsureSuccessStatusCode();
+            var content = response.Content.ReadAsStringAsync();
+            var relationship = JsonSerializer.Deserialize<Relationship>(await response.Content.ReadAsStringAsync());
+
+            return relationship;
+        }
+
+        public async Task<Relationship> SendFriendRequest(Guid requestorId, Guid requesteeId)
+        {
+            var relationship = new Relationship()
+            {
+                Requestor = requestorId,
+                Requestee = requesteeId,
+                RelationshipType = "friend",
+                Status = "requested"
+            };
+
+            var client = _clientFactory.CreateClient("UserService");
+            var content = new StringContent(JsonSerializer.Serialize<Relationship>(relationship), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("relationships", content);
+
+            response.EnsureSuccessStatusCode();
+
+            return JsonSerializer.Deserialize<Relationship>(await response.Content.ReadAsStringAsync());
+        }
+
         public async Task<User> CreateUser(NewUserCreationRequest newUserCreationRequest)
         {
             var client = _clientFactory.CreateClient("UserService");

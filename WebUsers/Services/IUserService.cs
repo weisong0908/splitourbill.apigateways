@@ -13,6 +13,8 @@ namespace WebUsers.Services
         Task<UserSimpleResponse> GetUser(Guid userId);
         Task<IList<UserSimpleResponse>> GetFriends(Guid userId);
         Task<IList<UserSimpleResponse>> GetFriendRequests(Guid userId);
+        Task<Relationship> GetRelationship(Guid relationshipId);
+        Task<Relationship> SendFriendRequest(Guid requestorId, Guid requesteeId);
         Task<User> CreateUser(NewUserCreationRequest newUserCreationRequest);
     }
 }
